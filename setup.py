@@ -14,7 +14,7 @@ setup(
         maintainer_email='kontakt@cuescience.de',
         license="MIT",
         url='',
-        packages=['mail_templates'],
+        packages=['mailtemplates'],
         install_requires=[
 	    "Django",
 	]
