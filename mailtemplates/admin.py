@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mail_templates.models import EMailTemplate
+from mailtemplates.models import EMailTemplate
 
 
 class EMailTemplateAdmin(admin.ModelAdmin):

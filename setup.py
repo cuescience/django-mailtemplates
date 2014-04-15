@@ -16,6 +16,7 @@ setup(
         url='',
         packages=['mailtemplates'],
         install_requires=[
-	    "Django",
+	       "Django",
+         "requests"
 	]
      )

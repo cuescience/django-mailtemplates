@@ -4,6 +4,11 @@ import requests
 
 from django.conf import settings
 
+class EMailTemplateManager(models.Manager):
+    def send(self, id, to, data):
+        return self.get_query_set().get(id=id).send(to, data)
+
+
 class EMailTemplate(models.Model):
     id = models.CharField(max_length=128, unique=True, primary_key=True)
     title = models.CharField(max_length=256)
@@ -11,6 +16,8 @@ class EMailTemplate(models.Model):
     subject = models.CharField(max_length=256)
     text = models.TextField()
     html = models.TextField()
+
+    objects = EMailTemplateManager()
 
     def __unicode__(self):
         return self.title
