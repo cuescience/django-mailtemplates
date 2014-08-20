@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
         name='django-mailtemplates',
-        version='0.2',
+        version='0.3',
         description='django mail templates',
         maintainer='cuescience',
         maintainer_email='kontakt@cuescience.de',

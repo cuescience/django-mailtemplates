@@ -52,8 +52,8 @@ class EMailTemplate(models.Model):
         # we should do it in the background
 
         for notification in self.notifications.all():
-            for admin_name, admin_mail in settings.ADMINS:
-                notification.send(admin_mail, data)
+            for _, mail in settings.MANAGERS:
+                notification.send(mail, data)
                 # TODO WEB-5 check response and log errors
 
         return response
