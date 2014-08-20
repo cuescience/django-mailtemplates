@@ -4,6 +4,7 @@ import requests
 
 from django.conf import settings
 
+
 class EMailTemplateManager(models.Manager):
     def send(self, id, to, data):
         return self.get_query_set().get(id=id).send(to, data)
@@ -16,6 +17,9 @@ class EMailTemplate(models.Model):
     subject = models.CharField(max_length=256)
     text = models.TextField()
     html = models.TextField()
+
+    #WEB-5
+    notifications = models.ManyToManyField("EMailTemplate", related_name="notificated_by", symmetrical=False, blank=True)
 
     objects = EMailTemplateManager()
 
@@ -35,12 +39,22 @@ class EMailTemplate(models.Model):
 
     def send(self, to, data):
         subject, text, html = self._render(data)
-        return requests.post(
-        settings.MAILGUN_API_URL,
-        auth=("api", settings.MAILGUN_API_KEY),
-        data={"from": self.sender,
-              "to": to,
-              "subject": subject,
-              "text": text,
-              "html": html})
+        response = requests.post(
+            settings.MAILGUN_API_URL,
+            auth=("api", settings.MAILGUN_API_KEY),
+            data={"from": self.sender,
+                  "to": to,
+                  "subject": subject,
+                  "text": text,
+                  "html": html})
+
+        # TODO WEB-5 for many notification this will take quite a while
+        # we should do it in the background
+
+        for notification in self.notifications.all():
+            for admin_name, admin_mail in settings.ADMINS:
+                notification.send(admin_mail, data)
+                # TODO WEB-5 check response and log errors
+
+        return response
 
